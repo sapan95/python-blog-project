@@ -4,9 +4,10 @@
 {%block content%} 
 <h1>Sapan's Blog</h1> 
 {%for post in post_list %} 
-{{post.title}}<br>
-<!--<h2> <a href="{{post.get_absolute_url}}">{{post.title}}</a> </h2> 
+<a href="{{post.get_absolute_url}}">{{post.title}}</a> </h2> 
 <p id='date'>Published on {{post.publish}} by {{post.author|title}}</p> 
-{{post.body|truncatewords:30|linebreaks}}--> 
+{{post.body|truncatewords:30|linebreaks}}
 {%endfor%} 
+<!--{% include 'blog/pagination.html' with page=post_list%} this is for function based view-->
+{% include 'blog/pagination.html' with page=page_obj%}<!--Class based view-->
 {%endblock%}

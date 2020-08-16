@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from blog import views
+from django.views.generic import ListView
+from blog.models import Post
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.post_list_view)
+    #path('',views.post_list_view), #For function based
+    #path('',views.PostListView.as_view()),
+    path('',ListView.as_view(queryset = Post.objects.filter(status = 'published'),paginate_by = 3)),
+    path('<int:year>/<int:month>/<int:day>/<slug:post>/',views.post_detail_view, name = 'post_detail'),
+    path('<int:id>/share/',views.send_mail_view)
 ]
