@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
+    'taggit',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'blogproject.urls'
@@ -130,3 +133,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'skgpython@gmail.com'
 EMAIL_HOST_PASSWORD ='Sapan@2014'
 EMAIL_USE_TLS = True
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

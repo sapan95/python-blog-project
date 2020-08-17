@@ -3,11 +3,17 @@ from blog.models import Post
 from blog.forms import EmailSendForm,CommentForm
 from django.core.mail import send_mail
 #from django.views.generic import ListView
-#from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from taggit.models import Tag
+from django.db.models import Count
 
 #Function based pagination
-'''def post_list_view(request):
+def post_list_view(request,tag_slug = None):
     post_list = Post.objects.filter(status='published')
+    tags = None
+    if tag_slug:
+        tags = get_object_or_404(Tag,slug = tag_slug)
+        post_list = post_list.filter(tags__in = [tags])
     paginator = Paginator(post_list,2)
     page_number = request.GET.get('page')
     try:
@@ -16,7 +22,7 @@ from django.core.mail import send_mail
         post_list = paginator.page(1)
     except EmptyPage:
         post_list = paginator.page(paginator.num_pages)
-    return render(request,'blog/post_list.html',{'post_list':post_list})'''
+    return render(request,'blog/post_list.html',{'post_list':post_list,'tags':tags})
 
 #Class based pegination
 '''class PostListView(ListView):
@@ -31,24 +37,21 @@ from django.core.mail import send_mail
 
 def post_detail_view(request,year,month,day,post):
     post = get_object_or_404(Post,slug=post,status='published',publish__year=year,publish__month=month,publish__day=day)
+    post_tags_ids=post.tags.values_list('id',flat=True)
+    similar_posts=Post.objects.filter(tags__in=post_tags_ids).exclude(id=post.id).only('title')
+    similar_posts=similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags','publish')[:4]
     comments=post.comments.filter(active=True)
-    print('before')
-    print(comments)
     csubmit=False
     if request.method=='POST':
         form=CommentForm(data=request.POST)
-        print('middle')
-        print(comments)
         if form.is_valid():
             new_comment=form.save(commit=False)
             new_comment.post=post
             new_comment.save()            
-            print('end')
-            print(comments)
             csubmit=True
     else:
         form=CommentForm()
-    return render(request,'blog/post_detail.html',{'post':post,'form':form,'comments':comments,'csubmit':csubmit})
+    return render(request,'blog/post_detail.html',{'post':post,'form':form,'comments':comments,'csubmit':csubmit,'similar_posts':similar_posts})
 def send_mail_view(request,id):
     post = get_object_or_404(Post,id=id,status = 'published')
     sent=False

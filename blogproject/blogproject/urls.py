@@ -18,11 +18,19 @@ from django.urls import path
 from blog import views
 from django.views.generic import ListView
 from blog.models import Post
+from django.conf import settings
+from django.urls import include, path
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('',views.post_list_view), #For function based
-    #path('',views.PostListView.as_view()),
-    path('',ListView.as_view(queryset = Post.objects.filter(status = 'published'),paginate_by = 3)),
+    path('',views.post_list_view), #For function based
+    path('tag/<str:tag_slug>/',views.post_list_view,name = 'tag_url'),
+    #path('',views.PostListView.as_view()), #Class based view
+    #path('',ListView.as_view(queryset = Post.objects.filter(status = 'published'),paginate_by = 3)),
     path('<int:year>/<int:month>/<int:day>/<slug:post>/',views.post_detail_view, name = 'post_detail'),
     path('<int:id>/share/',views.send_mail_view)
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns +=path('__debug__/', include(debug_toolbar.urls)),
