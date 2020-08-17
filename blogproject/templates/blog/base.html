@@ -9,16 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link rel="stylesheet" href="{% static "css/blog.css"%}">
     <title>{%block title %}{%endblock%}</title>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/"><h3><i class="fas fa-home"> </i> Blogs</h3></a>
+        <span class = "navbar-nav ml-auto"><a class="navbar-brand" href="/admin/"><h3><i class="fa fa-user-circle"> </i> Admin</h3></a></span>
+        
+    </nav>
+    <div class = 'base-div'>
     <div class="content">
         {%block content%}{%endblock%}
     </div>
     <div class="sidebar">
-        <h2>SAPAN'S BLOG</h2>
+        <h2>Filtered Blogs</h2>
         <p>The total number of published posts upto today: {%total_posts%}</p>
         <h3>Latest Posts:</h3>{% show_latest_posts 4%}
         <h3>Most Commented Posts:</h3>
@@ -28,6 +35,7 @@
             <li><a href="{{post.get_absolute_url}}" id='la'>{{post.title}}</a></li>
             {% endfor %}
         </ul>
+    </div>
     </div>
 </body>
 

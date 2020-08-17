@@ -2,25 +2,34 @@
     float:left;
     width: 60%;
     padding:0 0 0 30px;
-    }
-    .sidebar{
+}
+.sidebar{
     float:right;
     width:30%;
     padding:10px;
-    background: green;
+    background: #CC553D;
     height: 100%;
-    }
-    h1{
+}
+h1{
     text-align: center;
     border-bottom: 1px solid;
     padding: 0 0 10px 0;
-    }
-    #date{
+}   
+#date{  
     color:yellow;
     font-size:12px;
     font-style: italic;
-    }
-    body{
-    background: red;
+}
+body{
+    background: #B33B24;
     color:white;
-    }
+}
+a{
+    color: #1a0dab;
+}
+.bg-dark{
+    background-color: #832A0D !important;
+}
+.base-div{
+    padding-top: 68px;
+}

@@ -14,7 +14,7 @@ def post_list_view(request,tag_slug = None):
     if tag_slug:
         tags = get_object_or_404(Tag,slug = tag_slug)
         post_list = post_list.filter(tags__in = [tags])
-    paginator = Paginator(post_list,2)
+    paginator = Paginator(post_list,3)
     page_number = request.GET.get('page')
     try:
         post_list = paginator.page(page_number)
@@ -22,6 +22,7 @@ def post_list_view(request,tag_slug = None):
         post_list = paginator.page(1)
     except EmptyPage:
         post_list = paginator.page(paginator.num_pages)
+    
     return render(request,'blog/post_list.html',{'post_list':post_list,'tags':tags})
 
 #Class based pegination
